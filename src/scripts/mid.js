@@ -13,36 +13,14 @@ class LineItem extends Component {
   handleEdit = (e) => {
     const {_id} = this.props.el;
     const toDo = this.state.value;
-    const data = {toDo, _id};
-    const options = {
-      method: 'PUT',
-      body: JSON.stringify(data),
-      headers: {'Content-Type': 'application/json'}
-    }
-    const f = fetch(`/api/todos/${_id}`, options);
-    f.then((res)=>{
-      return res.json();
-    }).then((editedData) => {
-      this.props.editval(editedData);
-    })
+    this.props.editval(toDo, _id)
   }
   handleDelete = (e) => {
     const {_id} = this.props.el;
-    const data = { _id };
-    const options = {
-      method: 'DELETE',
-      body: JSON.stringify(data),
-      headers: {'Content-Type': 'application/json'}
-    }
-    const f = fetch(`/api/todos/${_id}`, options);
-    f.then((res)=>{
-      return res.json();
-    }).then((deletedDataId) => {
-      this.props.deleteval(deletedDataId);
-    })
+    this.props.deleteval(_id)
   }
   render() {
-    console.log(`mid props`,  this.props);
+    // console.log(`mid props`,  this.props);
     const {el} = this.props;
     return (
       <li>

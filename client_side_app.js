@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/todos', (req, res) => {
-  console.log('vvvvvvvvvvvvvv');
+  console.log('requesttt');
   Task.getAllData(res);
 });
 

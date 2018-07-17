@@ -4,24 +4,16 @@ class InAndAdd extends Component {
   constructor(props) {
     super(props)
   }
+  state = {
+    value: ''
+  }
   handleChange = (e) => {
     this.setState({value: e.target.value})
   }
   handleAdd = (e) => {
-    const data = {  toDo: this.state.value};
-    const options = {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {'Content-Type': 'application/json'}
-    };
-    if(this.state.value) {
-      const f = fetch('/api/todos', options);
-      f.then((res) => {
-        return res.json();
-      }).then((addedData) => {
-        this.props.addval(addedData);
-      })
-    }
+    console.log(`this.props. Inp`, this.props);
+    console.log('vvvvvvvvvvvvvvvvvv', this.state.value);
+    this.props.addval(this.state.value)
   }
   render() {
     return (

@@ -6,9 +6,8 @@ class OrderList extends Component {
     super(props)
   }
   render() {
-    console.log(`OrderList this.props Render`, this.props); // skzbic [], heto lcvac
-    const {toDosArr} =  this.props;
-    const listItems = toDosArr.map((el, i) =>{
+    const {toDoArr} =  this.props;
+    const listItems = toDoArr.map((el, i) =>{
       return (
          <LineItem key={el._id} el={el} editval={this.props.editval} deleteval={this.props.deleteval} >
          </LineItem>

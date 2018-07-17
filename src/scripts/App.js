@@ -1,47 +1,52 @@
 import React, { Component } from 'react';
 import InAndAdd from './InputAndButton';
 import OrderList from "./OrderList";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import {getToDos, addToDo, editToDo, deleteToDo} from '../actions/actionCreators';
 
-class App extends Component {
-  state = {
-    toDosArr :  []
-  }
+class WrappedApp extends Component {
   addval = toDo => {
-    const addedValueArr = [...this.state.toDosArr, toDo];
-    this.setState({ toDosArr: addedValueArr });
+    this.props.addToDo(toDo)
   };
-  editval = toDo => {
-    const editedValueArr = this.state.toDosArr.map((el, i, arr)=>{
-      return el._id != toDo._id ? el : toDo
-    });
-    this.setState({ toDosArr:  editedValueArr});
-  }
+  editval = (toDo, _id) => {
+    this.props.editToDo(toDo, _id)
+  };
   deleteval = elem => {
-    const deletedValueArr = this.state.toDosArr.filter((el, i, arr)=>{
-      return el._id != elem._id
-    });
-    this.setState({ toDosArr:  deletedValueArr});
+  this.props.deleteToDo(elem)
   }
   render() {
     return (
       <div>
         <InAndAdd addval={this.addval}></InAndAdd>
-        <OrderList deleteval={this.deleteval} editval={this.editval} toDosArr={this.state.toDosArr}></OrderList>
+        <OrderList deleteval={this.deleteval} editval={this.editval} toDoArr={this.props.toDoArr}></OrderList>
       </div>
     );
   };
-
   componentDidMount() {
-    const options = {
-      headers: {  'Content-Type': 'application/json' }
-    };
-    fetch('/api/todos', options)
-    .then((res)=>{
-      // console.log(res);
-    return res.json();
-    })
-    .then((data)=>this.setState({ toDosArr:  data}));
+  this.props.getToDos()
   }
 }
+
+const mapStateToProps = state => { // this.props.toDosArr
+  return {
+    toDoArr: state
+  }
+}
+
+const mapDispatchToProps = dispatch => { // this.props.getToDos
+  return {
+    // getToDos: () => dispatch(getToDos),
+    // addToDo: () => dispatch(addToDo),
+    // editToDo: () => dispatch(editToDo),
+    // deleteToDo: () => dispatch(deleteToDo)
+    getToDos: bindActionCreators(getToDos, dispatch),
+    addToDo: bindActionCreators(addToDo, dispatch),
+    editToDo: bindActionCreators(editToDo, dispatch),
+    deleteToDo: bindActionCreators(deleteToDo, dispatch)
+  }
+}
+
+const App = connect(mapStateToProps, mapDispatchToProps)(WrappedApp);
 
 export default App;
